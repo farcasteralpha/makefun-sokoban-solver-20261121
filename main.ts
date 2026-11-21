@@ -698,8 +698,12 @@ function replayMoves(W, H, grid, boxes0, player0, moves) {
 // Main: solve every instance under /input, write /output/<id>/solution.txt.
 // ---------------------------------------------------------------------------
 function main() {
-  const inputDir = "/input";
-  const outputDir = "/output";
+  // The sandbox mounts the input/output trees at /input and /output; the
+  // process driver (local grading without Docker) instead passes their host
+  // paths in MAKEFUN_INPUT_DIR / MAKEFUN_OUTPUT_DIR. Same directories in
+  // both executions, so this is not a source of variation.
+  const inputDir = process.env.MAKEFUN_INPUT_DIR || "/input";
+  const outputDir = process.env.MAKEFUN_OUTPUT_DIR || "/output";
   let ids;
   try {
     ids = fs.readdirSync(inputDir).filter((d) => {
